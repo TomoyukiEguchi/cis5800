@@ -1,0 +1,22 @@
+from django.views.generic import TemplateView
+
+from restaurant.models import Restaurant
+
+
+class IndexTemplateView(TemplateView):
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        restaurant_list = Restaurant.objects.all().order_by('-created_at')
+        
+        try:
+            restaurant_top = Restaurant.objects.order_by('?')[0]
+        except IndexError:
+            restaurant_top = None
+
+        context = {
+            'restaurant_list': restaurant_list,
+            'restaurant_top': restaurant_top,
+        }
+        return context
