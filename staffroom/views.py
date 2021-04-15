@@ -23,7 +23,7 @@ class StaffroomTemplateView(TemplateView):
 class RestaurantCreateView(CreateView):
     model = Restaurant
     form_class = RestaurantForm 
-    success_url = reverse_lazy("restaurant:index")
+    success_url = reverse_lazy("staffroom:index")
 
 
     def post(self, request, *args, **kwargs):
@@ -50,10 +50,10 @@ class RestaurantCreateView(CreateView):
 class RestaurantUpdateView(UpdateView):
     model = Restaurant
     fields = ["name", "area", "cuisine", "live_capacity", "address1", "address2", "city", "state", "zipcode", ]
-
-    def get_success_url(self):
-        pk = self.kwargs.get("pk")
-        return reverse("restaurant:detail", kwargs={"pk": pk})
+    success_url = reverse_lazy("staffroom:index")
+    # def get_success_url(self):
+    #     pk = self.kwargs.get("pk")
+    #     return reverse("restaurant:detail", kwargs={"pk": pk})
 
     def form_valid(self, form):
         messages.success(self.request, "Your information has been successfully updated.")
@@ -66,7 +66,7 @@ class RestaurantUpdateView(UpdateView):
 
 class RestaurantDeleteView(DeleteView):
     model = Restaurant
-    success_url = reverse_lazy("restaurant:index")
+    success_url = reverse_lazy("staffroom:index")
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, "Your information has been deleted.")

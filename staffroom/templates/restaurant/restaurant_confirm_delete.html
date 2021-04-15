@@ -1,7 +1,6 @@
 {% extends 'staffroom.html' %}
 
-{% block content %}
-<br>
+{% block body %}
 <h2>Delete</h2>
 
 <div class="row my-3">
@@ -20,7 +19,7 @@
                     <div class="row">
                         <div class="col">
                             <button type="submit" class="btn btn-danger">Delete</button>
-                            <a class="btn btn-info" href="{% url 'restaurant:detail' object.id %}">Cancel</a>
+                            <a class="btn btn-info" href="{% url 'staffroom:index' %}">Cancel</a>
                         </div>
                     </div>
                 </form>

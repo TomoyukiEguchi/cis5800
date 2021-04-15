@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
+
 cuisine_choice = (
     ('', 'Choose...'),
     ('American', 'American'),
