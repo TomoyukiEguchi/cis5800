@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'staffroom',
 
     'crispy_forms',
+    'phone_field',
+    'multi_email_field',
 
 ]
 

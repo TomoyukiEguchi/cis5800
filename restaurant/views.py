@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from django.urls import reverse, reverse_lazy
 
 from django.contrib import messages
@@ -26,3 +26,14 @@ class RestaurantDetailView(DetailView):
 
         return context
 
+
+class ConfirmPreOrder(DetailView):
+    template_name = 'restaurant/restaurant_confirm_pre_order.html'
+    model = Restaurant
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['CommentForm'] = CommentForm(initial={'restaurant': self.object})        
+        
+        return context

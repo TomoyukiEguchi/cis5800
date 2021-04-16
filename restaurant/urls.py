@@ -1,6 +1,6 @@
 from django.urls import path
 
-from restaurant.views import RestaurantListView,  RestaurantDetailView 
+from restaurant.views import RestaurantListView,  RestaurantDetailView, ConfirmPreOrder
 
 
 app_name = 'restaurant'
@@ -8,4 +8,5 @@ app_name = 'restaurant'
 urlpatterns = [
     path('', RestaurantListView.as_view(), name="index"),
     path('<int:pk>', RestaurantDetailView.as_view(), name="detail"),
+    path('<int:pk>/confirmation', ConfirmPreOrder.as_view(), name="pre_order_confirm"),
 ]

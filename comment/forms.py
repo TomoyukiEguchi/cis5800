@@ -7,7 +7,7 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ["content", "restaurant", ]
+        fields = ["full_name", "phone_number", "email", "content", "restaurant", ]
     
         widgets = {
                 "restaurant": forms.HiddenInput()
