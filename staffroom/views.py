@@ -5,6 +5,10 @@ from django.contrib import messages
 from restaurant.models import Restaurant
 from restaurant.forms import RestaurantForm
 
+from .forms import LoginForm
+
+from django.contrib.auth.views import LoginView, LogoutView
+
 
 class StaffroomTemplateView(TemplateView):
     template_name = "staffroom/index.html"
@@ -71,3 +75,11 @@ class RestaurantDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, "Your information has been deleted.")
         return super().delete(request, *args, **kwargs)
+
+
+class Login(LoginView):
+    form_class = LoginForm
+    template_name = 'staffroom/login.html'
+
+class Logout(LogoutView):
+    template_name = 'staffroom/logout.html'
