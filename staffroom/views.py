@@ -1,16 +1,19 @@
 from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView
 from django.urls import reverse, reverse_lazy
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from .forms import LoginForm, SignUpForm
 
 from restaurant.models import Restaurant
 from restaurant.forms import RestaurantForm
 
-from .forms import LoginForm
 
-from django.contrib.auth.views import LoginView, LogoutView
-
-
-class StaffroomTemplateView(TemplateView):
+class StaffroomTemplateView(LoginRequiredMixin, TemplateView):
     template_name = "staffroom/index.html"
 
     def get_context_data(self, **kwargs):
@@ -24,7 +27,7 @@ class StaffroomTemplateView(TemplateView):
         return context
 
 
-class RestaurantCreateView(CreateView):
+class RestaurantCreateView(LoginRequiredMixin, CreateView):
     model = Restaurant
     form_class = RestaurantForm 
     success_url = reverse_lazy("staffroom:index")
@@ -51,7 +54,7 @@ class RestaurantCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class RestaurantUpdateView(UpdateView):
+class RestaurantUpdateView(LoginRequiredMixin, UpdateView):
     model = Restaurant
     fields = ["name", "area", "cuisine", "live_capacity", "address1", "address2", "city", "state", "zipcode", ]
     success_url = reverse_lazy("staffroom:index")
@@ -68,7 +71,7 @@ class RestaurantUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class RestaurantDeleteView(DeleteView):
+class RestaurantDeleteView(LoginRequiredMixin, DeleteView):
     model = Restaurant
     success_url = reverse_lazy("staffroom:index")
 
@@ -83,3 +86,16 @@ class Login(LoginView):
 
 class Logout(LogoutView):
     template_name = 'staffroom/logout.html'
+
+
+class SignUp(CreateView):
+    form_class = SignUpForm
+    template_name = 'staffroom/signup.html'
+    success_url = reverse_lazy('staffroom:index')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        self.object = user
+        messages.info(self.request, 'Your account has been successfully created.')
+        return HttpResponseRedirect(self.get_success_url())

@@ -13,7 +13,7 @@
         {% endif %}
     </div>
     <div class="col-lg-5">
-        <h1 class="font-weight-light mt-5">{{ object.name }}</h1>
+        <h1 class="font-weight-light mt-4">{{ object.name }}</h1>
         <p class="text-muted"><small>{{ object.area }} <span>&#183;</span> {{ object.cuisine }}</small></p>
         <p class="mb-0">{{ object.address1 }} {{ object.address2|default_if_none:"" }}</p>
         <p>{{ object.city }}, {{ object.state }} {{ object.zipcode }}</p>
@@ -35,12 +35,64 @@
         {% endif %}
         <br>
         
-        <div class="row my-3">
+        <div class="row my-2">
             <div class="col-lg-12">
-                {% if not request.user.is_authenticated %}
+                {% if request.user.is_authenticated and request.user == restaurant.user %}
                     <a class="btn btn-info" href="{% url 'staffroom:restaurant:update' object.id %}">Edit</a>
+                    <a class="btn btn-outline-dark" href="{% url 'staffroom:index' %}">Admin</a>
                 {% else %}
-                    <a class="btn btn-info" href="{% url 'staffroom:restaurant:update' object.id %}">User</a>
+                    <!-- Button trigger modal -->
+                    <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-mdb-toggle="modal"
+                    data-mdb-target="#exampleModal"
+                    >
+                    Pre-Order
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="row">
+                        <div
+                        class="modal fade"
+                        id="exampleModal"
+                        tabindex="-1"
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
+                        >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Pre-Order</h5>
+                                    <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-mdb-dismiss="modal"
+                                    aria-label="Close"
+                                    ></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <form method="post" action="{% url 'comment:create' %}">
+                                                {% csrf_token %}
+                                                {{ CommentForm|crispy }}
+                                                <br>
+                                                <button type="submit" class="btn btn-primary">Order</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                                    Close
+                                    </button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div> -->
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </div>
@@ -48,7 +100,8 @@
     </div>
 </div>
 
-<div class="row">
+
+<div class="row my-5">
     <div class="col-lg-7">
         <h4>Schedule</h4>
         
