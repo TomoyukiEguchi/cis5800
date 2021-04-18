@@ -12,3 +12,11 @@ class RestaurantForm(forms.ModelForm):
         widgets = {
             "user": forms.HiddenInput()
         }
+
+
+class SearchForm(forms.Form):
+    q = forms.CharField(min_length=1, max_length=20, label='', required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+

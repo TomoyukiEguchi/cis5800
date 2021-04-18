@@ -1,3 +1,5 @@
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, resolve_url, redirect
 from django.views.generic import ListView, DetailView, TemplateView
 from django.urls import reverse, reverse_lazy
 
@@ -6,9 +8,11 @@ from django.contrib import messages
 from .models import Restaurant
 from comment.forms import CommentForm
 
+from .forms import SearchForm
+from django.db.models import Q
+
 
 # Create your views here.
-
 class RestaurantListView(ListView):
     model = Restaurant
 
@@ -37,3 +41,18 @@ class ConfirmPreOrder(DetailView):
         context['CommentForm'] = CommentForm(initial={'restaurant': self.object})        
         
         return context
+
+
+def SearchListView(request):
+    if request.method == 'POST':
+        searchform = SearchForm(request.POST)
+
+        if searchform.is_valid():
+            freeword = searchform.cleaned_data['q']
+            search_list = Restaurant.objects.filter(Q(name__icontains = freeword)|Q(cuisine__icontains = freeword))
+
+        params = {
+            'search_list': search_list,
+        }
+
+        return render (request, 'restaurant/search.html', params)
