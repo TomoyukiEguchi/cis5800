@@ -10,11 +10,13 @@ from comment.forms import CommentForm
 
 from .forms import SearchForm
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 # Create your views here.
 class RestaurantListView(ListView):
     model = Restaurant
+    paginate_by = 5
 
     def get_queryset(self):
         return Restaurant.objects.all().order_by('-updated_at')
@@ -56,3 +58,8 @@ def SearchListView(request):
         }
 
         return render (request, 'restaurant/search.html', params)
+
+
+class CuisineListView(ListView):
+    template_name = 'restaurant/restaurant_cuisine_list.html'
+    model = Restaurant

@@ -8,7 +8,7 @@ class IndexTemplateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        restaurant_list = Restaurant.objects.all().order_by('-created_at')
+        restaurant_list = Restaurant.objects.all().order_by('-created_at')[:8]
         
         try:
             restaurant_top = Restaurant.objects.order_by('?')[0]
