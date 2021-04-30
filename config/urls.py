@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from lib.views import IndexTemplateView
+from lib.views import IndexTemplateView, Contact, AboutUs
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
@@ -26,5 +27,7 @@ urlpatterns = [
     path('staffroom/', include("staffroom.urls", namespace="staffroom")),
     path('comment/', include("comment.urls", namespace="comment")),
 
+    path('aboutus/', AboutUs.as_view(), name='aboutus'),
+    path('contact/', Contact.as_view(), name='contact'),
     path('', IndexTemplateView.as_view(), name="index"),
 ]

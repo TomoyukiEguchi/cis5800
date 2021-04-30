@@ -20,3 +20,11 @@ class IndexTemplateView(TemplateView):
             'restaurant_top': restaurant_top,
         }
         return context
+
+
+class Contact(TemplateView):
+    template_name = "contact.html"
+
+
+class AboutUs(TemplateView):
+    template_name = "about.html"
